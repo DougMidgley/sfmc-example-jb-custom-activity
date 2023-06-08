@@ -1,9 +1,14 @@
-const discountCodeExample = require('./modules/discount-code/webpack.config');
-const splitExample = require('./modules/discount-redemption-split/webpack.config');
+import discountCodeExample from './modules/discount-code/webpack.config.js';
+import splitExample from './modules/discount-redemption-split/webpack.config.js';
 
-module.exports = function(env, argv) {
+/**
+ *
+ * @param environment
+ * @param argv
+ */
+export default function config (environment, argv) {
     return [
-        discountCodeExample(env, argv),
-        splitExample(env, argv),
+        discountCodeExample(environment, argv),
+        splitExample(environment, argv),
     ];
-};
+}
