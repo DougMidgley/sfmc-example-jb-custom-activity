@@ -1,5 +1,5 @@
 import express from "express";
-import configJSON from "../config/config-json";
+import configJSON from "../config/config-json.js";
 
 // setup the split example app
 /**

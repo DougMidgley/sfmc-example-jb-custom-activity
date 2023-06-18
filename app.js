@@ -1,25 +1,41 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser')
+import express from "express";
+import path from "node:path";
+import bodyParser from "body-parser";
+import * as url from "node:url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
-const submodules = [
-    require('./modules/discount-code/app/app'),
-    require('./modules/discount-redemption-split/app/app'),
-];
+//modules
+import discountCodeExample from "./modules/discount-code/app/app.js";
+import splitExample from "./modules/discount-redemption-split/app/app.js";
 
 const app = express();
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(function (_, __, next) {
+  console.log("LOG DOUG");
+  next();
+});
+app.get("/test", function (request, res) {
+  console.log("LOG DOUG", request);
+  res.send({
+    status: "ok",
+    request: { url: request.url, method: request.method, query: request.query, params: request.params },
+  });
+});
 
-app.set('port', (process.env.PORT || 8080));
-app.use('/', express.static(path.join(__dirname, 'home')));
+app.set("port", Number.parseInt(process.env.PORT) || 8080);
+app.use("/", express.static(path.join(__dirname, "home")));
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/@salesforce-ux/design-system/assets')));
 
-submodules.forEach((sm) => sm(app, {
+for (const sm of [discountCodeExample, splitExample])
+  sm(app, {
     rootDirectory: __dirname,
-}));
-
-app.listen(app.get('port'), function() {
-    console.log(`Express is running at localhost: ${app.get('port')}`);
+  });
+app.listen(app.get('port'), function () {
+  console.log(`Express is running at localhost:${app.get('port')}`);
 });
+
+// app.listen(app.get('port'), function() {
+//     console.log(`Express is running at localhost: ${app.get('port')}`);
+// });

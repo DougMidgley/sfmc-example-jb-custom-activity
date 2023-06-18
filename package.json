@@ -11,7 +11,8 @@
     "build:dev": "webpack --mode development",
     "start": "node ./app.js",
     "lint:fix": "eslint --fix modules/**",
-    "prettier": "prettier --write modules/**"
+    "prettier": "prettier --write modules/**",
+    "deploy": "gcloud app deploy --quiet && gcloud app logs tail -s default"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
