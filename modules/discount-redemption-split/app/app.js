@@ -1,6 +1,8 @@
 import express from "express";
 import configJSON from "../config/config-json.js";
 
+import {decodeJwt} from "../../common/jwt.js"
+
 // setup the split example app
 /**
  *
@@ -21,27 +23,27 @@ export default function splitExample(app, options) {
   );
 
   // setup the index redirect
-  app.get("/modules/discount-redemption-split/", function (request, res) {
-    return res.redirect("/modules/discount-redemption-split/index.html");
+  app.get("/modules/discount-redemption-split/", function (_, result) {
+    return result.redirect("/modules/discount-redemption-split/index.html");
   });
 
   // setup index.html route
   app.get(
     "/modules/discount-redemption-split/index.html",
-    function (request, res) {
+    function (_, result) {
       // you can use your favorite templating library to generate your html file.
       // this example keeps things simple and just returns a static file
-      return res.sendFile(`${moduleDirectory}/html/index.html`);
+      return result.sendFile(`${moduleDirectory}/html/index.html`);
     }
   );
 
   // setup config.json route
   app.get(
     "/modules/discount-redemption-split/config.json",
-    function (request, res) {
+    function (request, result) {
       // Journey Builder looks for config.json when the canvas loads.
       // We'll dynamically generate the config object with a function
-      return res.status(200).json(configJSON(request));
+      return result.status(200).json(configJSON(request));
     }
   );
 
@@ -61,9 +63,9 @@ export default function splitExample(app, options) {
    * 40x - Return if the configuration is invalid (this will block the publish phase)
    * 50x - Return if the configuration is invalid (this will block the publish phase)
    */
-  app.post("/modules/discount-redemption-split/save", function (request, res) {
+  app.post("/modules/discount-redemption-split/save", decodeJwt, function (_, result) {
     console.log("debug: /modules/discount-redemption-split/save");
-    return res.status(200).json({});
+    return result.status(200).json({});
   });
 
   /**
@@ -78,9 +80,10 @@ export default function splitExample(app, options) {
    */
   app.post(
     "/modules/discount-redemption-split/publish",
-    function (request, res) {
+    decodeJwt,
+    function (_, result) {
       console.log("debug: /modules/discount-redemption-split/publish");
-      return res.status(200).json({});
+      return result.status(200).json({});
     }
   );
 
@@ -95,9 +98,10 @@ export default function splitExample(app, options) {
    */
   app.post(
     "/modules/discount-redemption-split/validate",
-    function (request, res) {
+    decodeJwt,
+    function (_, result) {
       console.log("debug: /modules/discount-redemption-split/validate");
-      return res.status(200).json({});
+      return result.status(200).json({});
     }
   );
 
@@ -111,9 +115,9 @@ export default function splitExample(app, options) {
    * Called when a Journey is stopped.
    * @returns {[type]}
    */
-  app.post("/modules/discount-redemption-split/stop", function (request, res) {
+  app.post("/modules/discount-redemption-split/stop",decodeJwt, function (_, result) {
     console.log("debug: /modules/discount-redemption-split/stop");
-    return res.status(200).json({});
+    return result.status(200).json({});
   });
 
   /**
@@ -126,7 +130,8 @@ export default function splitExample(app, options) {
    */
   app.post(
     "/modules/discount-redemption-split/execute",
-    function (request_, res) {
+    decodeJwt,
+    function (request_, result) {
       console.log("debug: /modules/discount-redemption-split/execute");
 
       var request = request_.body;
@@ -161,25 +166,25 @@ export default function splitExample(app, options) {
         switch (discountCode[0]) {
           case "A": {
             console.log("");
-            return res.status(200).json({ branchResult: "no_activity" });
+            return result.status(200).json({ branchResult: "no_activity" });
           }
           case "B": {
-            return res.status(200).json({ branchResult: "viewed_item" });
+            return result.status(200).json({ branchResult: "viewed_item" });
           }
           case "C": {
-            return res.status(200).json({ branchResult: "abandoned_cart" });
+            return result.status(200).json({ branchResult: "abandoned_cart" });
           }
           case "D": {
-            return res.status(200).json({ branchResult: "purchased_item" });
+            return result.status(200).json({ branchResult: "purchased_item" });
           }
           case "E":
           default: {
-            return res.status(200).json({ branchResult: "invalid_code" });
+            return result.status(200).json({ branchResult: "invalid_code" });
           }
         }
       } else {
         // Fail the contact, we don't know this discount code.
-        return res.status(500).json({ branchResult: "invalid_code" });
+        return result.status(500).json({ branchResult: "invalid_code" });
       }
     }
   );

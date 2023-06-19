@@ -18,5 +18,10 @@
   },
   "globals": {
     "assert": "readonly"
-  }
+  },
+  "rules":{
+    "unicorn/no-null": "off",
+    "unicorn/filename-case": "off"
+  },
+  "ignorePatterns": ["**/*.html", "**/dist/**", "node_modules", "**/images/**"]
 }

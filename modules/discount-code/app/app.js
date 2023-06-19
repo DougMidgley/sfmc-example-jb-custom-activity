@@ -14,6 +14,7 @@
 import express from "express";
 
 import configJSON from "../config/config-json.js";
+import { decodeJwt } from "../../common/jwt.js";
 
 // setup the discount-code example app
 /**
@@ -35,22 +36,22 @@ export default function discountCodeExample(app, options) {
   );
 
   // setup the index redirect
-  app.get("/modules/discount-code/", function (request, res) {
-    return res.redirect("/modules/discount-code/index.html");
+  app.get("/modules/discount-code/", function (_, result) {
+    return result.redirect("/modules/discount-code/index.html");
   });
 
   // setup index.html route
-  app.get("/modules/discount-code/index.html", function (request, res) {
+  app.get("/modules/discount-code/index.html", function (_, result) {
     // you can use your favorite templating library to generate your html file.
     // this example keeps things simple and just returns a static file
-    return res.sendFile(`${moduleDirectory}/html/index.html`);
+    return result.sendFile(`${moduleDirectory}/html/index.html`);
   });
 
   // setup config.json route
-  app.get("/modules/discount-code/config.json", function (request, res) {
+  app.get("/modules/discount-code/config.json", function (request, result) {
     // Journey Builder looks for config.json when the canvas loads.
     // We'll dynamically generate the config object with a function
-    return res.status(200).json(configJSON(request));
+    return result.status(200).json(configJSON(request));
   });
 
   // ```````````````````````````````````````````````````````
@@ -69,9 +70,9 @@ export default function discountCodeExample(app, options) {
    * 40x - Return if the configuration is invalid (this will block the publish phase)
    * 50x - Return if the configuration is invalid (this will block the publish phase)
    */
-  app.post("/modules/discount-code/save", function (request, res) {
+  app.post("/modules/discount-code/save", decodeJwt, function (_, result) {
     console.log("debug: /modules/discount-code/save");
-    return res.status(200).json({});
+    return result.status(200).json({});
   });
 
   /**
@@ -84,9 +85,9 @@ export default function discountCodeExample(app, options) {
    * 40x - Return if the configuration is invalid (this will block the publish phase)
    * 50x - Return if the configuration is invalid (this will block the publish phase)
    */
-  app.post("/modules/discount-code/publish", function (request, res) {
+  app.post("/modules/discount-code/publish", decodeJwt, function (_, result) {
     console.log("debug: /modules/discount-code/publish");
-    return res.status(200).json({});
+    return result.status(200).json({});
   });
 
   /**
@@ -98,9 +99,9 @@ export default function discountCodeExample(app, options) {
    * 40x - Return if the configuration is invalid (this will block the publish phase)
    * 50x - Return if the configuration is invalid (this will block the publish phase)
    */
-  app.post("/modules/discount-code/validate", function (request, res) {
+  app.post("/modules/discount-code/validate", decodeJwt, function (_, result) {
     console.log("debug: /modules/discount-code/validate");
-    return res.status(200).json({});
+    return result.status(200).json({});
   });
 
   // ```````````````````````````````````````````````````````
@@ -113,9 +114,9 @@ export default function discountCodeExample(app, options) {
    * Called when a Journey is stopped.
    * @returns {[type]}
    */
-  app.post("/modules/discount-code/stop", function (request, res) {
+  app.post("/modules/discount-code/stop", decodeJwt, function (_, result) {
     console.log("debug: /modules/discount-code/stop");
-    return res.status(200).json({});
+    return result.status(200).json({});
   });
 
   /**
@@ -126,59 +127,63 @@ export default function discountCodeExample(app, options) {
    * 4xx - Contact is ejected from the Journey.
    * 5xx - Contact is ejected from the Journey.
    */
-  app.post("/modules/discount-code/execute", function (request_, res) {
-    console.log("debug: /modules/discount-code/execute");
+  app.post(
+    "/modules/discount-code/execute",
+    decodeJwt,
+    function (request_, result) {
+      console.log("debug: /modules/discount-code/execute");
 
-    const request = request_.body;
+      const request = request_.body;
 
-    console.log(" req.body", JSON.stringify(request_.body));
+      console.log(" req.body", JSON.stringify(request_.body));
 
-    // Find the in argument
-    /**
-     *
-     * @param k
-     */
-    function getInArgument(k) {
-      if (request && request.inArguments) {
-        for (let index = 0; index < request.inArguments.length; index++) {
-          let e = request.inArguments[index];
-          if (k in e) {
-            return e[k];
+      // Find the in argument
+      /**
+       *
+       * @param k
+       */
+      function getInArgument(k) {
+        if (request && request.inArguments) {
+          for (let index = 0; index < request.inArguments.length; index++) {
+            let e = request.inArguments[index];
+            if (k in e) {
+              return e[k];
+            }
           }
         }
       }
+
+      // example: https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/example-rest-activity.htm
+      const discountInArgument = getInArgument("discount") || "nothing";
+      const responseObject = {
+        discount: discountInArgument,
+        discountCode: generateRandomCode() + `-${discountInArgument}%`,
+      };
+
+      console.log("Response Object", JSON.stringify(responseObject));
+
+      return result.status(200).json(responseObject);
     }
+  );
+}
 
-    /**
-     * Generate a random discount code.
-     *
-     * Note: This function is for demonstration purposes only and is not designed
-     * to generate real random codes. The first digit is always A, B, C, D, or E.
-     * @returns {object}
-     *
-     * Example Response Object
-     * {
-     *    "discount":"15",
-     *    "discountCode":"ADUXN-96454-15%"
-     * }
-     */
-    function generateRandomCode() {
-      let toReturn = String.fromCharCode(65 + Math.random() * 5);
-      for (let index = 0; index < 4; index++) {
-        toReturn += String.fromCharCode(65 + Math.random() * 25);
-      }
-      return toReturn + "-" + Math.round(Math.random() * 99_999, 0);
-    }
-
-    // example: https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/example-rest-activity.htm
-    const discountInArgument = getInArgument("discount") || "nothing";
-    const responseObject = {
-      discount: discountInArgument,
-      discountCode: generateRandomCode() + `-${discountInArgument}%`,
-    };
-
-    console.log("Response Object", JSON.stringify(responseObject));
-
-    return res.status(200).json(responseObject);
-  });
+/**
+ * Generate a random discount code.
+ *
+ * Note: This function is for demonstration purposes only and is not designed
+ * to generate real random codes. The first digit is always A, B, C, D, or E.
+ * @returns {object}
+ *
+ * Example Response Object
+ * {
+ *    "discount":"15",
+ *    "discountCode":"ADUXN-96454-15%"
+ * }
+ */
+function generateRandomCode() {
+  let toReturn = String.fromCharCode(65 + Math.random() * 5);
+  for (let index = 0; index < 4; index++) {
+    toReturn += String.fromCharCode(65 + Math.random() * 25);
+  }
+  return toReturn + "-" + Math.round(Math.random() * 99_999, 0);
 }

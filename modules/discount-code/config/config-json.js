@@ -14,7 +14,7 @@ export default function configJSON(request) {
     type: "REST",
     lang: {
       "en-US": {
-        name: "Discount Code",
+        name: `Discount Code${process.env?.npm_lifecycle_event == "dev" ? "-DEV" : ""}`,
         description:
           "Issue a discount code to contact them to entice them to buy something.",
       },
@@ -39,17 +39,25 @@ export default function configJSON(request) {
         retryDelay: 1000,
         // The number of concurrent requests Journey Builder will send all together
         concurrentRequests: 5,
+        useJwt: true
+
       },
     },
     configurationArguments: {
       publish: {
         url: `https://${request.headers.host}/modules/discount-code/publish`,
+        useJwt: true
+
       },
       validate: {
         url: `https://${request.headers.host}/modules/discount-code/validate`,
+        useJwt: true
+
       },
       stop: {
         url: `https://${request.headers.host}/modules/discount-code/stop`,
+        useJwt: true
+
       },
     },
     userInterfaces: {

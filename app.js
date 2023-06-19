@@ -12,19 +12,15 @@ const app = express();
 
 // parse application/json
 app.use(bodyParser.json());
-app.use(function (_, __, next) {
-  console.log("LOG DOUG");
-  next();
-});
-app.get("/test", function (request, res) {
-  console.log("LOG DOUG", request);
-  res.send({
+app.use(bodyParser.raw({ type: "application/jwt" }));
+app.get("/test", function (request, result) {
+  result.send({
     status: "ok",
     request: { url: request.url, method: request.method, query: request.query, params: request.params },
   });
 });
 
-app.set("port", Number.parseInt(process.env.PORT) || 8080);
+app.set("port", Number.parseInt(process.env.PORT) || 3000);
 app.use("/", express.static(path.join(__dirname, "home")));
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/@salesforce-ux/design-system/assets')));
 
@@ -35,7 +31,3 @@ for (const sm of [discountCodeExample, splitExample])
 app.listen(app.get('port'), function () {
   console.log(`Express is running at localhost:${app.get('port')}`);
 });
-
-// app.listen(app.get('port'), function() {
-//     console.log(`Express is running at localhost: ${app.get('port')}`);
-// });

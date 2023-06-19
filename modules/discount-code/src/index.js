@@ -181,7 +181,9 @@ function setupEventHandlers() {
 function setupExampleTestHarness() {
   const isLocalhost =
     location.hostname === "localhost" || location.hostname === "127.0.0.1";
-  if (!isLocalhost) {
+  if (isLocalhost) {
+    console.log("[echo] RUNNING TEST HARNESS");
+  } else {
     // don't load the test harness functions when running in Journey Builder
     return;
   }

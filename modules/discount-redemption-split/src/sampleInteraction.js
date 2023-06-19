@@ -19,6 +19,7 @@ const onInitActivity = {
       ],
       outArguments: [],
       url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/execute",
+      useJwt: true
     },
     testExecute: "",
     startActivityKey: "{{Context.StartActivityKey}}",
@@ -28,21 +29,25 @@ const onInitActivity = {
   configurationArguments: {
     save: {
       url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/save",
+      useJwt: true
     },
     testSave: "",
     publish: {
       url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/publish",
+      useJwt: true
     },
     testPublish: "",
     unpublish: "",
     stop: {
       url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/stop",
+      useJwt: true
     },
     testStop: "",
     testUnpublish: "",
     partnerActivityId: "",
     validate: {
       url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/validate",
+      useJwt: true
     },
     testValidate: "",
     outArgumentSchema: {},
@@ -226,6 +231,7 @@ const requestedInteraction = {
           timeout: 10_000,
           retryCount: 3,
           retryDelay: 0,
+          useJwt: true
         },
         testExecute: "",
         startActivityKey: "{{Context.StartActivityKey}}",
@@ -237,17 +243,20 @@ const requestedInteraction = {
         testSave: "",
         publish: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-code/publish",
+          useJwt: true
         },
         testPublish: "",
         unpublish: "",
         stop: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-code/stop",
+          useJwt: true
         },
         testStop: "",
         testUnpublish: "",
         partnerActivityId: "",
         validate: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-code/validate",
+          useJwt: true
         },
         testValidate: "",
         outArgumentSchema: {
@@ -474,6 +483,7 @@ const requestedInteraction = {
           ],
           outArguments: [],
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/execute",
+          useJwt: true
         },
         testExecute: "",
         startActivityKey: "{{Context.StartActivityKey}}",
@@ -483,21 +493,25 @@ const requestedInteraction = {
       configurationArguments: {
         save: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/save",
+          useJwt: true
         },
         testSave: "",
         publish: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/publish",
+          useJwt: true
         },
         testPublish: "",
         unpublish: "",
         stop: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/stop",
+          useJwt: true
         },
         testStop: "",
         testUnpublish: "",
         partnerActivityId: "",
         validate: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-redemption-split/validate",
+          useJwt: true
         },
         testValidate: "",
         outArgumentSchema: {},
@@ -752,17 +766,21 @@ const requestedInteraction = {
           timeout: 10_000,
           retryCount: 3,
           retryDelay: 0,
+          useJwt: true
         },
       },
       configurationArguments: {
         publish: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-code/publish",
+          useJwt: true
         },
         validate: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-code/validate",
+          useJwt: true
         },
         stop: {
           url: "https://sfmc-example-custom-activity.herokuapp.com/modules/discount-code/stop",
+          useJwt: true
         },
         applicationExtensionKey: "104a5141-b917-4c10-ad79-eccfd8cc7167",
       },

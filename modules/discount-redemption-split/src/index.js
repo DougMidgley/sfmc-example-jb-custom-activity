@@ -140,11 +140,11 @@ function onInitActivity(payload) {
   console.log("-------------------------------------------------");
 
   // render all of this activity's outcomes into a drop down list
-  const selectOptions = activity.outcomes.map((outcome) => {
-    const value = outcome.arguments.branchResult;
-    const text = outcome.metaData.label;
-    return `<option value="${value}">${text}</option>`;
-  });
+  // const selectOptions = activity.outcomes.map((outcome) => {
+  //   const value = outcome.arguments.branchResult;
+  //   const text = outcome.metaData.label;
+  //   return `<option value="${value}">${text}</option>`;
+  // });
 
   // There is no need to have the disabled attribute on the close button as there
   // are no options for the user to select.

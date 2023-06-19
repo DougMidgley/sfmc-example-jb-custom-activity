@@ -16,7 +16,7 @@ export default function configJSON(request) {
     lang: {
       // Internationalize your language here!
       "en-US": {
-        name: "Code Engagement",
+        name: `Code Engagement${process.env?.npm_lifecycle_event == "dev" ? "-DEV" : ""}`,
         description: "Check the status of the discount code.",
       },
     },
@@ -31,20 +31,30 @@ export default function configJSON(request) {
         // Fill in the host with the host that this is running on.
         // It must run under HTTPS
         url: `https://${request.headers.host}/modules/discount-redemption-split/execute`,
+        useJwt: true
+
       },
     },
     configurationArguments: {
       save: {
         url: `https://${request.headers.host}/modules/discount-redemption-split/save`,
+        useJwt: true
+
       },
       publish: {
         url: `https://${request.headers.host}/modules/discount-redemption-split/publish`,
+        useJwt: true
+
       },
       validate: {
         url: `https://${request.headers.host}/modules/discount-redemption-split/validate`,
+        useJwt: true
+
       },
       stop: {
         url: `https://${request.headers.host}/modules/discount-redemption-split/stop`,
+        useJwt: true
+
       },
     },
     userInterfaces: {
