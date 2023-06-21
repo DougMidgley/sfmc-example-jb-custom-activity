@@ -1,7 +1,5 @@
 {
-  "plugins": ["jsdoc"],
   "extends": [
-    "plugin:jsdoc/recommended",
     "prettier",
     "plugin:unicorn/recommended",
     "eslint:recommended"
@@ -19,7 +17,7 @@
   "globals": {
     "assert": "readonly"
   },
-  "rules":{
+  "rules": {
     "unicorn/no-null": "off",
     "unicorn/filename-case": "off"
   },

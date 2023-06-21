@@ -1,7 +1,7 @@
 import express from "express";
 import configJSON from "../config/config-json.js";
 
-import {decodeJwt} from "../../common/jwt.js"
+import { decodeJwt } from "../../common/jwt.js";
 
 // setup the split example app
 /**
@@ -63,10 +63,14 @@ export default function splitExample(app, options) {
    * 40x - Return if the configuration is invalid (this will block the publish phase)
    * 50x - Return if the configuration is invalid (this will block the publish phase)
    */
-  app.post("/modules/discount-redemption-split/save", decodeJwt, function (_, result) {
-    console.log("debug: /modules/discount-redemption-split/save");
-    return result.status(200).json({});
-  });
+  app.post(
+    "/modules/discount-redemption-split/save",
+    decodeJwt,
+    function (_, result) {
+      console.log("debug: /modules/discount-redemption-split/save");
+      return result.status(200).json({});
+    }
+  );
 
   /**
    * Called when a Journey has been published.
@@ -115,10 +119,14 @@ export default function splitExample(app, options) {
    * Called when a Journey is stopped.
    * @returns {[type]}
    */
-  app.post("/modules/discount-redemption-split/stop",decodeJwt, function (_, result) {
-    console.log("debug: /modules/discount-redemption-split/stop");
-    return result.status(200).json({});
-  });
+  app.post(
+    "/modules/discount-redemption-split/stop",
+    decodeJwt,
+    function (_, result) {
+      console.log("debug: /modules/discount-redemption-split/stop");
+      return result.status(200).json({});
+    }
+  );
 
   /**
    * Called when a contact is flowing through the Journey.

@@ -6,7 +6,7 @@
   "description": "Journey Builder Custom Activities",
   "license": "BSD-3-Clause",
   "scripts": {
-    "dev": "concurrently \"nodemon start\" \"webpack --watch\"",
+    "dev": "concurrently \"set PORT=3000&& nodemon start\" \"webpack --watch\"",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "start": "node ./app.js",
@@ -24,7 +24,6 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jest": "^27.2.2",
-    "eslint-plugin-jsdoc": "^46.2.6",
     "eslint-plugin-unicorn": "^47.0.0",
     "prettier": "^2.8.8",
     "webpack": "^5.87.0",

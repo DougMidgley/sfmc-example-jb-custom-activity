@@ -145,9 +145,9 @@ export default function discountCodeExample(app, options) {
       function getInArgument(k) {
         if (request && request.inArguments) {
           for (let index = 0; index < request.inArguments.length; index++) {
-            let e = request.inArguments[index];
-            if (k in e) {
-              return e[k];
+            let arguments_ = request.inArguments[index];
+            if (k in arguments_) {
+              return arguments_[k];
             }
           }
         }
@@ -181,8 +181,10 @@ export default function discountCodeExample(app, options) {
  * }
  */
 function generateRandomCode() {
+  // eslint-disable-next-line unicorn/prefer-code-point
   let toReturn = String.fromCharCode(65 + Math.random() * 5);
   for (let index = 0; index < 4; index++) {
+    // eslint-disable-next-line unicorn/prefer-code-point
     toReturn += String.fromCharCode(65 + Math.random() * 25);
   }
   return toReturn + "-" + Math.round(Math.random() * 99_999, 0);

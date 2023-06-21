@@ -1,7 +1,7 @@
 // import webpack from 'webpack';
 import path from "node:path";
-import * as url from 'node:url';
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+import * as url from "node:url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 /**
  *
@@ -27,7 +27,6 @@ export default function config(environment, argv) {
         },
       ],
     },
-    plugins: [
-    ],
+    plugins: [],
   };
 }
